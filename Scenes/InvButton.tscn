@@ -17,7 +17,7 @@ shader_param/black = Color( 0.101961, 0.109804, 0.172549, 1 )
 shader_param/white = Color( 0.956863, 0.956863, 0.956863, 1 )
 _sections_unfolded = [ "Resource", "shader_param" ]
 
-[node name="InvButton" type="Control"]
+[node name="InvButton" type="Control" index="0"]
 
 material = SubResource( 1 )
 anchor_left = 0.0
@@ -94,17 +94,14 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Margin", "Material", "Visibility", "custom_colors", "custom_fonts" ]
 
-[node name="Audio" type="AudioStreamPlayer2D" parent="." index="2"]
+[node name="Audio" type="AudioStreamPlayer" parent="." index="2"]
 
-position = Vector2( 0, -0.291992 )
 stream = ExtResource( 7 )
 volume_db = 0.0
 pitch_scale = 1.0
 autoplay = false
-max_distance = 2000.0
-attenuation = 1.0
+mix_target = 0
 bus = "Master"
-area_mask = 1
 
 [connection signal="button_down" from="Button" to="." method="_on_Button_button_down"]
 

@@ -21,7 +21,6 @@ func _process(delta):
 func _on_Button_mouse_entered():
 	get_material().set_shader_param("inverted", true)
 	$Audio.play()
-	print("play")
 	pass # replace with function body
 
 
