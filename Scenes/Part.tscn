@@ -1,0 +1,99 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Part.gd" type="Script" id=1]
+[ext_resource path="res://part.png" type="Texture" id=2]
+[ext_resource path="res://Scenes/InvButton.tscn" type="PackedScene" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+custom_solver_bias = 0.0
+extents = Vector2( 3.5, 3.5 )
+
+[sub_resource type="Shader" id=2]
+
+code = "shader_type canvas_item;
+
+uniform bool inverted = false;
+uniform vec4 black : hint_color;
+uniform vec4 white : hint_color;
+
+void fragment()
+{
+	vec4 col = texture(TEXTURE, UV);
+	if(inverted && col.a > 0.0)
+	{
+		vec4 wdif = abs(col - white);
+		vec4 bdif = abs(col - black);
+		if(max(max(wdif.r, wdif.g), wdif.b) < 0.1)
+		{
+			col = black;
+		}
+		if(max(max(bdif.r, bdif.g), bdif.b) < 0.1)
+		{
+			col = white;
+		}
+	}
+	COLOR = col;
+}"
+_sections_unfolded = [ "Resource" ]
+
+[sub_resource type="ShaderMaterial" id=3]
+
+render_priority = 0
+shader = SubResource( 2 )
+shader_param/inverted = false
+shader_param/black = Color( 0.101961, 0.109804, 0.172549, 1 )
+shader_param/white = Color( 0.956863, 0.956863, 0.956863, 1 )
+_sections_unfolded = [ "Resource", "shader_param" ]
+
+[node name="Part" type="Area2D"]
+
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+script = ExtResource( 1 )
+type = "part"
+
+[node name="Sprite" type="Sprite" parent="." index="0"]
+
+texture = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="1"]
+
+shape = SubResource( 1 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." index="2"]
+
+layer = 1
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+
+[node name="Buttons" type="Control" parent="CanvasLayer" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 40.0
+margin_bottom = 40.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+
+[node name="InvButton" parent="CanvasLayer/Buttons" index="0" instance=ExtResource( 3 )]
+
+material = SubResource( 3 )
+text = "Pick up"
+
+[connection signal="clicked" from="CanvasLayer/Buttons/InvButton" to="." method="_on_InvButton_clicked"]
+
+
