@@ -20,7 +20,15 @@ func _physics_process(delta):
 
 func move_out():
 	var dir = (position - Global.Earth.position).normalized()
-	position += dir * 50;
+#	position += dir * 50;
+	var new = velocity + dir * 50
+	if !$Tween.is_active:
+		$Tween.interpolate_property(self, "velocity", velocity, new, 1, Tween.TRANS_LINEAR, Tween.EASE_OUT_IN, 0)
+		$Tween.interpolate_property(self, "velocity", new, velocity, 1, Tween.TRANS_LINEAR, Tween.EASE_OUT_IN, 1)
+		$Tween.start()
+		return true
+	else:
+		return false
 
 func _on_Mine_clicked():
 	queue_free()

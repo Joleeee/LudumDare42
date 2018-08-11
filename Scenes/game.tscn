@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scripts/Game.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=2]
@@ -7,7 +7,6 @@
 [ext_resource path="res://icon.png" type="Texture" id=5]
 [ext_resource path="res://ShaderMover.gd" type="Script" id=6]
 [ext_resource path="res://CRT_Shader_Godot.shader" type="Shader" id=7]
-[ext_resource path="res://Scenes/InvButton.tscn" type="PackedScene" id=8]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -27,43 +26,6 @@ shader_param/lines_distance = null
 shader_param/lines_on_screen = null
 shader_param/scanline_alpha = null
 shader_param/lines_velocity = null
-
-[sub_resource type="Shader" id=3]
-
-code = "shader_type canvas_item;
-
-uniform bool inverted = false;
-uniform vec4 black : hint_color;
-uniform vec4 white : hint_color;
-
-void fragment()
-{
-	vec4 col = texture(TEXTURE, UV);
-	if(inverted && col.a > 0.0)
-	{
-		vec4 wdif = abs(col - white);
-		vec4 bdif = abs(col - black);
-		if(max(max(wdif.r, wdif.g), wdif.b) < 0.1)
-		{
-			col = black;
-		}
-		if(max(max(bdif.r, bdif.g), bdif.b) < 0.1)
-		{
-			col = white;
-		}
-	}
-	COLOR = col;
-}"
-_sections_unfolded = [ "Resource" ]
-
-[sub_resource type="ShaderMaterial" id=4]
-
-render_priority = 0
-shader = SubResource( 3 )
-shader_param/inverted = false
-shader_param/black = Color( 0.101961, 0.109804, 0.172549, 1 )
-shader_param/white = Color( 0.956863, 0.956863, 0.956863, 1 )
-_sections_unfolded = [ "Resource", "shader_param" ]
 
 [node name="game" type="Node2D"]
 
@@ -154,9 +116,5 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 color = Color( 1, 1, 1, 1 )
 _sections_unfolded = [ "Margin", "Material" ]
-
-[node name="InvButton" parent="." index="2" instance=ExtResource( 8 )]
-
-material = SubResource( 4 )
 
 

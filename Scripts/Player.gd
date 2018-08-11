@@ -54,6 +54,9 @@ func _physics_process(delta):
 				x.collider.velocity -= (position - x.collider.position)*0.01
 
 func pickup(what):
-	what.queue_free()
 	for x in get_tree().get_nodes_in_group("junk"):
-		x.move_out()
+		if x.move_out():
+			print("yes")
+			what.queue_free()
+		else:
+			print("no")

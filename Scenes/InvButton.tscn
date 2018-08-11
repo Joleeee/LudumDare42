@@ -17,7 +17,7 @@ shader_param/black = Color( 0.101961, 0.109804, 0.172549, 1 )
 shader_param/white = Color( 0.956863, 0.956863, 0.956863, 1 )
 _sections_unfolded = [ "Resource", "shader_param" ]
 
-[node name="InvButton" type="Control" index="0"]
+[node name="InvButton" type="Control"]
 
 material = SubResource( 1 )
 anchor_left = 0.0
