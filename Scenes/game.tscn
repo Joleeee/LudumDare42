@@ -27,7 +27,7 @@ shader_param/lines_on_screen = null
 shader_param/scanline_alpha = null
 shader_param/lines_velocity = null
 
-[node name="game" type="Node2D"]
+[node name="game" type="Node2D" index="0"]
 
 script = ExtResource( 1 )
 
@@ -37,7 +37,6 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="Player" type="Area2D" parent="Earth" index="0"]
 
-editor/display_folded = true
 position = Vector2( 0, -100 )
 input_pickable = true
 gravity_vec = Vector2( 0, 1 )
@@ -51,7 +50,10 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="Sprite" type="Sprite" parent="Earth/Player" index="0"]
 
+z_index = 10
+z_as_relative = false
 texture = ExtResource( 3 )
+_sections_unfolded = [ "Z Index" ]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Earth/Player" index="1"]
 
@@ -92,10 +94,12 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="BackBufferCopy" type="BackBufferCopy" parent="." index="1"]
 
+z_index = 100
+z_as_relative = false
 copy_mode = 2
 rect = Rect2( -100, -100, 200, 200 )
 script = ExtResource( 6 )
-_sections_unfolded = [ "Transform" ]
+_sections_unfolded = [ "Transform", "Z Index" ]
 
 [node name="ColorRect" type="ColorRect" parent="BackBufferCopy" index="0"]
 
@@ -115,6 +119,6 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 color = Color( 1, 1, 1, 1 )
-_sections_unfolded = [ "Margin", "Material" ]
+_sections_unfolded = [ "Margin" ]
 
 

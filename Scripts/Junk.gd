@@ -8,6 +8,7 @@ var velocity = Vector2(0, 0)
 
 func _ready():
 	set_meta("type", "junk")
+	rotation = randf() * PI * 2
 	if leaks:
 		for x in randi() % 2:
 			add_child(oil)
@@ -20,11 +21,10 @@ func _physics_process(delta):
 
 func move_out():
 	var dir = (position - Global.Earth.position).normalized()
-#	position += dir * 50;
-	var new = velocity + dir * 50
+	var new = dir * 50
 	if !$Tween.is_active:
 		$Tween.interpolate_property(self, "velocity", velocity, new, 1, Tween.TRANS_LINEAR, Tween.EASE_OUT_IN, 0)
-		$Tween.interpolate_property(self, "velocity", new, velocity, 1, Tween.TRANS_LINEAR, Tween.EASE_OUT_IN, 1)
+		$Tween.interpolate_property(self, "velocity", new, Vector2(0, 0), 1, Tween.TRANS_LINEAR, Tween.EASE_OUT_IN, 1)
 		$Tween.start()
 		return true
 	else:

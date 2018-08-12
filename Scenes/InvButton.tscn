@@ -1,17 +1,43 @@
 [gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://InvertShader.shader" type="Shader" id=1]
-[ext_resource path="res://Scripts/UIButton.gd" type="Script" id=2]
-[ext_resource path="res://white_pixel.png" type="Texture" id=3]
-[ext_resource path="res://Scripts/TextureButton.gd" type="Script" id=4]
-[ext_resource path="res://panel.png" type="Texture" id=5]
-[ext_resource path="res://PixelFont.tres" type="DynamicFont" id=6]
-[ext_resource path="res://select.wav" type="AudioStream" id=7]
+[ext_resource path="res://Scripts/UIButton.gd" type="Script" id=1]
+[ext_resource path="res://white_pixel.png" type="Texture" id=2]
+[ext_resource path="res://Scripts/TextureButton.gd" type="Script" id=3]
+[ext_resource path="res://panel.png" type="Texture" id=4]
+[ext_resource path="res://PixelFont.tres" type="DynamicFont" id=5]
+[ext_resource path="res://select.wav" type="AudioStream" id=6]
 
-[sub_resource type="ShaderMaterial" id=1]
+[sub_resource type="Shader" id=1]
+
+code = "shader_type canvas_item;
+
+uniform bool inverted = false;
+uniform vec4 black : hint_color;
+uniform vec4 white : hint_color;
+
+void fragment()
+{
+	vec4 col = texture(TEXTURE, UV);
+	if(inverted && col.a > 0.0)
+	{
+		vec4 wdif = abs(col - white);
+		vec4 bdif = abs(col - black);
+		if(max(max(wdif.r, wdif.g), wdif.b) < 0.1)
+		{
+			col = black;
+		}
+		if(max(max(bdif.r, bdif.g), bdif.b) < 0.1)
+		{
+			col = white;
+		}
+	}
+	COLOR = col;
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
 
 render_priority = 0
-shader = ExtResource( 1 )
+shader = SubResource( 1 )
 shader_param/inverted = false
 shader_param/black = Color( 0.101961, 0.109804, 0.172549, 1 )
 shader_param/white = Color( 0.956863, 0.956863, 0.956863, 1 )
@@ -19,7 +45,7 @@ _sections_unfolded = [ "Resource", "shader_param" ]
 
 [node name="InvButton" type="Control"]
 
-material = SubResource( 1 )
+material = SubResource( 2 )
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -32,7 +58,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-script = ExtResource( 2 )
+script = ExtResource( 1 )
 _sections_unfolded = [ "Material", "Pause" ]
 text = "Mine!"
 
@@ -56,12 +82,12 @@ toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
 group = null
-texture_normal = ExtResource( 3 )
+texture_normal = ExtResource( 2 )
 expand = true
 stretch_mode = 1
-script = ExtResource( 4 )
+script = ExtResource( 3 )
 _sections_unfolded = [ "Material" ]
-texture = ExtResource( 5 )
+texture = ExtResource( 4 )
 draw_center = true
 slice_mode = 0
 left_slice = 1
@@ -87,7 +113,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = ExtResource( 6 )
+custom_fonts/font = ExtResource( 5 )
 text = "Mine!"
 percent_visible = 1.0
 lines_skipped = 0
@@ -96,7 +122,7 @@ _sections_unfolded = [ "Margin", "Material", "Visibility", "custom_colors", "cus
 
 [node name="Audio" type="AudioStreamPlayer" parent="." index="2"]
 
-stream = ExtResource( 7 )
+stream = ExtResource( 6 )
 volume_db = 0.0
 pitch_scale = 1.0
 autoplay = false
